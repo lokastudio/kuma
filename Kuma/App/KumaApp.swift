@@ -10,41 +10,58 @@ import SwiftUI
 
 @main
 struct KumaApp: App {
+    @State private var appStore: AppStore
+    @State private var workspaceStore: WorkspaceStore
+    @State private var serviceStore: ServiceStore
+    @State private var kubeConfigStore: KubeConfigStore
+
+    init() {
+        // Enforce single instance activation guard on application launch
+        if WindowCoordinator.activateExistingInstanceIfRunning() {
+            exit(0)
+        }
+
+        let dbManager = (try? DatabaseManager.makeInMemory()) ?? (try! DatabaseManager.makePersistent())
+        let workspaceRepo = GRDBWorkspaceRepository(dbWriter: dbManager.dbWriter)
+        let serviceRepo = GRDBServiceRepository(dbWriter: dbManager.dbWriter)
+        let providerRepo = GRDBProviderRepository(dbManager: dbManager)
+        let masterKeyVault = MasterKeyVault(dbManager: dbManager)
+        let vaultSecretRepo = GRDBVaultSecretRepository(dbManager: dbManager, masterKeyVault: masterKeyVault)
+        let kubeConfigRepo = GRDBKubeConfigRepository(dbManager: dbManager)
+
+        _appStore = State(wrappedValue: AppStore(initialPhase: .splash))
+        _workspaceStore = State(wrappedValue: WorkspaceStore(repository: workspaceRepo))
+        _serviceStore = State(wrappedValue: ServiceStore(
+            serviceRepository: serviceRepo,
+            providerRepository: providerRepo,
+            vaultSecretRepository: vaultSecretRepo
+        ))
+        _kubeConfigStore = State(wrappedValue: KubeConfigStore(repository: kubeConfigRepo))
+    }
+
     var body: some Scene {
         WindowGroup {
-            if #available(macOS 15.0, *) {
-                ContentView()
-                    .containerBackground(.thinMaterial, for: .window)
-            } else {
-                ContentView()
-                    .background(.thinMaterial)
-            }
+            WindowCoordinatorView()
+                .environment(appStore)
+                .environment(workspaceStore)
+                .environment(serviceStore)
+                .environment(kubeConfigStore)
+                .modifier(WindowBackgroundModifier())
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
     }
 }
 
-struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "square.stack.3d.up.fill")
-                .font(.system(size: 48))
-                .foregroundStyle(.tint)
-            
-            Text("Kuma V4 Native Engine")
-                .font(.title)
-                .fontWeight(.bold)
-            
-            Text("Local-First, In-Process Service & Kubernetes Forwarder Architecture")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+private struct WindowBackgroundModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(macOS 15.0, *) {
+            content
+                .containerBackground(.thinMaterial, for: .window)
+        } else {
+            content
+                .background(.thinMaterial)
         }
-        .padding(32)
-        .frame(minWidth: 600, minHeight: 400)
     }
 }
 
-#Preview {
-    ContentView()
-}

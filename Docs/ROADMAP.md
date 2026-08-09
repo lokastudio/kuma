@@ -40,7 +40,7 @@
 - [x] **4.4** `LogCoalescer` (Buffered `AsyncStream<String>` with 200ms Throttling)
 - [x] **4.5** `ServiceExecutionEngine` (Orchestrates Execution via `ServiceExecutionState`)
 - [x] **4.6** `JSONImporter` & `MigrationEngine` (Safe Team Workspace Sync)
-- [ ] **4.7** `PortConflictResolver` (PID Detection & Auto-Free Port Suggestion)
+- [x] **4.7** `PortConflictResolver` (PID Detection & Auto-Free Port Suggestion)
 - [ ] **4.8** `KumaSoundManager` (Custom Sound Effects & `~/Library/Sounds/` Notification Sync)
 
 ---

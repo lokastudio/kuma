@@ -42,7 +42,7 @@ Instructions for AI Agent:
 2. **Completeness Check**: Verify files against `.agents/AGENTS.md` and `Docs/ERD.md` (check for missing cases, unhandled errors, or missing domain properties).
 3. **Swift 6 Concurrency & Type Safety**: Audit for `Sendable` conformance, `@MainActor` boundaries, and data race safety.
 4. **Proactive Refactoring Suggestions & Action Plan**: Propose high-precision fixes or improvements FIRST, and ask for user confirmation before applying code changes!
-5. **Git Commit Message (At the End)**: At the very end of your response, provide a ready-to-copy Conventional Commit message (`git commit -m "..."`) for when all audit fixes are applied.
+5. **Complete Git Commands (At the Very End)**: At the very end of your response, provide the exact ready-to-copy shell commands including specific `git add [file-paths]` and Conventional `git commit -m "..."` summarizing the task changes.
 
 Please provide your findings & refactoring suggestions first!
 ```

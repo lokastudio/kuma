@@ -32,6 +32,9 @@ public enum KumaColor: Sendable {
     public static let statusStopping = Color.orange
     /// Service failed state color (Rose/Red)
     public static let statusFailed = Color.red
+    /// Form validation error text color
+    public static let statusError = Color.red
+
 
     // MARK: - Provider Badge Colors
     /// Kubernetes provider color (Blue)

@@ -47,7 +47,7 @@
 
 ## 🎨 Phase 5: Design System & Kuma FormKit (UI Tokens)
 - [x] **5.1** `KumaTheme` Tokens (Fonts, Spacing, Radii, Semantic Colors)
-- [ ] **5.2** `KumaFormSection` & Layout Containers
+- [x] **5.2** `KumaFormSection` & Layout Containers
 - [ ] **5.3** `KumaTextField`, `KumaPickerField`, `KumaToggleField`, `KumaSecureField` (Contextual Placeholders & Focus Rings)
 - [ ] **5.4** `KumaPortMappingEditor`, `KumaKeyValueEditor`, `KumaListManager`
 

@@ -50,12 +50,13 @@
 
 ---
 
-## 5. Live App Alignment & Specification Governance (Kuma V3 Active App Reference)
-When ensuring alignment with active Kuma V3 behavior:
-1. **Live Visual & Behavioral Reference**: Refer to the active running `Kuma.app` and `Docs/UX_SPECIFICATION.md` for UI layout, FormKit interactions, and visual flow matching.
-2. **Reverse Symbol Verification**: Verify method names, payload structures, and engine signatures against demangled process symbols (`Kuma.ContainerRuntimeService`, `Kuma.KubectlService`, etc.) to guarantee 100% functional equivalence.
-3. **Strict Refactoring (Zero Anti-Patterns)**: All implementations MUST be written cleanly to comply with Swift 6 Strict Concurrency, `os.Logger`, `@Observable`, `ServiceAggregate`, and Kuma architectural rules.
-4. **Purity Verification**: Ensure legacy anti-patterns (`static var shared`, un-closed `Pipe()`, `nonisolated(unsafe)`, raw `print()`, `SMLoginItemSetEnabled`, `activateIgnoringOtherApps`, multi-dictionary state) are 100% stripped.
+## 5. Live App Alignment & Memory Symbol Verification (STRICT GOVERNANCE)
+When ensuring 100% alignment with active Kuma V3 behavior:
+1. **Mandatory Memory Symbol Verification**: Before implementing any engine, manager, or service, the AI MUST verify exact demangled type metadata and method signatures from the active running `Kuma.app` process via `lldb` / `xcrun swift-demangle` to prevent inventing over-engineered or hallucinated APIs.
+2. **Zero Over-Engineering / Zero Hallucination**: AI MUST NOT invent new enum cases, sound effects, or fake interfaces that did not exist in the active V3 running binary unless explicitly requested in `Docs/UX_SPECIFICATION.md`.
+3. **Live Visual & Behavioral Matching**: Refer to active running `Kuma.app` for UI layout, FormKit interactions, and visual flow matching.
+4. **Strict Swift 6 Refactoring**: All implementations MUST comply with Swift 6 Strict Concurrency, `os.Logger`, `@Observable`, `ServiceAggregate`, and Kuma architectural rules.
+5. **Purity Verification**: Ensure legacy anti-patterns (`nonisolated(unsafe)`, raw `print()`, `SMLoginItemSetEnabled`, `activateIgnoringOtherApps`, multi-dictionary state) are 100% stripped.
 
 ---
 

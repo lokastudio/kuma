@@ -249,7 +249,7 @@ public actor ServiceExecutionEngine {
     ) async throws -> ProcessExecutionConfig {
         switch provider.config {
         case .shellScript(let payload):
-            let shellPath = try await pathResolver.resolveExecutablePath(for: "zsh") ?? "/bin/zsh"
+            let shellPath = await pathResolver.resolveExecutablePath(for: "zsh") ?? "/bin/zsh"
             let workDirURL = payload.workingDirectory != nil ? URL(fileURLWithPath: payload.workingDirectory!) : nil
             return ProcessExecutionConfig(
                 executableURL: URL(fileURLWithPath: shellPath),
@@ -261,7 +261,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .kubePortForward(let payload):
-            let kubectlPath = try await pathResolver.resolveExecutablePath(for: "kubectl") ?? "/usr/local/bin/kubectl"
+            let kubectlPath = await pathResolver.resolveExecutablePath(for: "kubectl") ?? "/usr/local/bin/kubectl"
             let localPort = portMappings.first?.localPort ?? 8080
             let remotePort = portMappings.first?.remotePort ?? localPort
             
@@ -284,7 +284,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .dockerCompose(let payload):
-            let dockerPath = try await pathResolver.resolveExecutablePath(for: "docker") ?? "/usr/local/bin/docker"
+            let dockerPath = await pathResolver.resolveExecutablePath(for: "docker") ?? "/usr/local/bin/docker"
             var args = ["compose"]
             if let composeFile = payload.composeFilePath {
                 args.append(contentsOf: ["-f", composeFile])
@@ -301,7 +301,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .podmanCompose(let payload):
-            let podmanPath = try await pathResolver.resolveExecutablePath(for: "podman-compose") ?? "/usr/local/bin/podman-compose"
+            let podmanPath = await pathResolver.resolveExecutablePath(for: "podman-compose") ?? "/usr/local/bin/podman-compose"
             var args: [String] = []
             if let composeFile = payload.composeFilePath {
                 args.append(contentsOf: ["-f", composeFile])
@@ -318,7 +318,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .sshTunnel(let payload):
-            let sshPath = try await pathResolver.resolveExecutablePath(for: "ssh") ?? "/usr/bin/ssh"
+            let sshPath = await pathResolver.resolveExecutablePath(for: "ssh") ?? "/usr/bin/ssh"
             let localPort = portMappings.first?.localPort ?? 8080
             let remotePort = payload.remotePort
             let tunnelSpec = "\(localPort):\(payload.remoteHost):\(remotePort)"
@@ -342,7 +342,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .httpCheck(let payload):
-            let curlPath = try await pathResolver.resolveExecutablePath(for: "curl") ?? "/usr/bin/curl"
+            let curlPath = await pathResolver.resolveExecutablePath(for: "curl") ?? "/usr/bin/curl"
             return ProcessExecutionConfig(
                 executableURL: URL(fileURLWithPath: curlPath),
                 arguments: ["-i", "-s", payload.url],
@@ -352,7 +352,7 @@ public actor ServiceExecutionEngine {
 
         case .tunnel(let payload):
             let binaryName = payload.provider == .cloudflared ? "cloudflared" : "ngrok"
-            let tunnelPath = try await pathResolver.resolveExecutablePath(for: binaryName) ?? "/usr/local/bin/\(binaryName)"
+            let tunnelPath = await pathResolver.resolveExecutablePath(for: binaryName) ?? "/usr/local/bin/\(binaryName)"
             let args = payload.provider == .cloudflared
                 ? ["tunnel", "--url", "http://localhost:\(payload.localPort)"]
                 : ["http", "\(payload.localPort)"]
@@ -365,7 +365,7 @@ public actor ServiceExecutionEngine {
             )
 
         case .processMonitor(let payload):
-            let pgrepPath = try await pathResolver.resolveExecutablePath(for: "pgrep") ?? "/usr/bin/pgrep"
+            let pgrepPath = await pathResolver.resolveExecutablePath(for: "pgrep") ?? "/usr/bin/pgrep"
             let procName = payload.processName ?? "system"
             return ProcessExecutionConfig(
                 executableURL: URL(fileURLWithPath: pgrepPath),

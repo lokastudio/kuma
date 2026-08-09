@@ -31,11 +31,12 @@ public final class MigrationEngine: Sendable {
         _ payload: WorkspaceExportPayload,
         strategy: ImportConflictStrategy
     ) async throws -> Workspace {
-        var importedWorkspace: Workspace?
-        try await dbWriter.write { db in
+        let now = Date()
+
+        let importedWorkspace: Workspace = try await dbWriter.write { db in
+            var createdWs: Workspace?
             try db.inTransaction {
                 let ws: Workspace
-                let now = Date()
 
                 switch strategy {
                 case .replace:
@@ -78,7 +79,7 @@ public final class MigrationEngine: Sendable {
                         createdAt: now,
                         updatedAt: now
                     )
-                    var wsRecord = WorkspaceRecord(from: ws)
+                    let wsRecord = WorkspaceRecord(from: ws)
                     try wsRecord.insert(db)
 
                     var groupIdMap: [UUID: UUID] = [:]
@@ -93,7 +94,7 @@ public final class MigrationEngine: Sendable {
                             createdAt: now,
                             updatedAt: now
                         )
-                        var rec = ServiceGroupRecord(from: newGroup)
+                        let rec = ServiceGroupRecord(from: newGroup)
                         try rec.insert(db)
                     }
 
@@ -118,7 +119,7 @@ public final class MigrationEngine: Sendable {
                             createdAt: now,
                             updatedAt: now
                         )
-                        var rec = ServiceRecord(from: newService)
+                        let rec = ServiceRecord(from: newService)
                         try rec.insert(db)
                     }
 
@@ -137,7 +138,7 @@ public final class MigrationEngine: Sendable {
                             createdAt: now,
                             updatedAt: now
                         )
-                        var rec = try ProviderRecord(from: newProvider)
+                        let rec = try ProviderRecord(from: newProvider)
                         try rec.insert(db)
                     }
 
@@ -163,20 +164,22 @@ public final class MigrationEngine: Sendable {
                             protocolType: port.protocolType,
                             createdAt: now
                         )
-                        var rec = PortMappingRecord(from: newPort)
+                        let rec = PortMappingRecord(from: newPort)
                         try rec.insert(db)
                     }
                 }
 
-                importedWorkspace = ws
-                self.logger.info("Successfully imported workspace '\(ws.name, privacy: .public)' (\(ws.id)) with strategy: \(String(describing: strategy))")
+                createdWs = ws
                 return .commit
             }
+
+            guard let resultWs = createdWs else {
+                throw DatabaseError(message: "Failed to resolve imported workspace after transaction commit.")
+            }
+            return resultWs
         }
-        
-        guard let finalWorkspace = importedWorkspace else {
-            throw DatabaseError(message: "Failed to resolve imported workspace after transaction commit.")
-        }
-        return finalWorkspace
+
+        self.logger.info("Successfully imported workspace '\(importedWorkspace.name, privacy: .public)' (\(importedWorkspace.id)) with strategy: \(String(describing: strategy))")
+        return importedWorkspace
     }
 }

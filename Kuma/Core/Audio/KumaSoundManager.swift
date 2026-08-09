@@ -25,7 +25,7 @@ public protocol KumaSoundManagerProtocol: Sendable {
 public final class KumaSoundManager: NSObject, KumaSoundManagerProtocol, AVAudioPlayerDelegate, Sendable {
     
     public static let shared = KumaSoundManager()
-    private static let logger = Logger(subsystem: "com.kuma.app", category: "SoundManager")
+    private nonisolated static let logger = Logger(subsystem: "com.kuma.app", category: "SoundManager")
     
     public var isMuted: Bool = false
     private var audioPlayer: AVAudioPlayer?

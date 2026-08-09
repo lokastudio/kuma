@@ -10,6 +10,14 @@ public enum KumaColor: Sendable {
     public static let cardBackground = Color(nsColor: .controlBackgroundColor)
     /// Card subtle border color
     public static let cardBorder = Color.primary.opacity(0.1)
+    /// Border token alias for FormKit input controls
+    public static let border = Color.primary.opacity(0.12)
+    /// Accent color for selection and focus states
+    public static let accent = Color.accentColor
+    /// Window background alias
+    public static let windowBackground = Color(nsColor: .windowBackgroundColor)
+    /// Form validation error text color
+    public static let errorText = Color.red
     /// Divider line color
     public static let divider = Color.primary.opacity(0.08)
 

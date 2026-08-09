@@ -55,7 +55,7 @@
 
 ## 🌉 Phase 6: Stores Layer (State Observation & Bridge)
 - [x] **6.1** `AppStore` (@Observable Root Container & AppPhase State Machine)
-- [ ] **6.2** `WorkspaceStore` (@Observable Workspace State & `NSCache` Avatars)
+- [x] **6.2** `WorkspaceStore` (@Observable Workspace State & `NSCache` Avatars)
 - [ ] **6.3** `ServiceStore` (@Observable Service Management & Auto-Start Restoration Logic via `ServiceAggregate`)
 - [ ] **6.4** `KubeConfigStore` (@Observable KubeContext Sync & FSEvents Observer)
 

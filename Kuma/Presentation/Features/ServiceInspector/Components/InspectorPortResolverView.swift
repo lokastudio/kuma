@@ -92,9 +92,13 @@ public struct InspectorPortResolverView: View {
         copiedPortId = mapping.id
 
         Task {
-            try? await Task.sleep(nanoseconds: 1_500_000_000)
-            if copiedPortId == mapping.id {
-                copiedPortId = nil
+            do {
+                try await Task.sleep(nanoseconds: 1_500_000_000)
+                if copiedPortId == mapping.id {
+                    copiedPortId = nil
+                }
+            } catch {
+                // Task cancelled on view dismissal
             }
         }
     }

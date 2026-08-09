@@ -70,7 +70,7 @@
 - [x] **7.5** `ServicesDeckView` (`LazyVStack` Grid, Search Filter, Auto-Context Follow, Quick Actions)
 - [x] **7.6** `ServiceCardView` (Status Pills, Provider Badges, Accessibility Labels, Hover Effects)
 - [x] **7.7** `ServiceInspectorView` (Logs Stream Viewer with Coalescing, Port Resolver UI, Human Copywriting)
-- [ ] **7.8** `SettingsView` (General, Launch at Login, Auto-Start, Confirm Quit Safety)
+- [x] **7.8** `SettingsView` (General, Launch at Login, Auto-Start, Confirm Quit Safety)
 - [ ] **7.9** `MenuBarApp` (Native Status Item Controller & Quick Toggle Menu)
 
 ---

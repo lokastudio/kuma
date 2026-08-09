@@ -229,5 +229,30 @@ public final class KubeConfigStore {
     public nonisolated func stopFileSystemObserver() {
         // Safe nonisolated cleanup
     }
+
+    // MARK: - Mock for Previews & Unit Tests
+
+    /// Mock `KubeConfigStore` pre-loaded for SwiftUI `#Preview` and tests.
+    public static var mock: KubeConfigStore {
+        let mockRepo = MockKubeConfigRepository()
+        let store = KubeConfigStore(repository: mockRepo)
+        store.kubeConfigs = [
+            KubeConfig(name: "Default KubeConfig", path: "~/.kube/config", isDefault: true)
+        ]
+        store.selectedKubeConfigId = store.kubeConfigs.first?.id
+        return store
+    }
 }
+
+// MARK: - Mock Repository Helper
+
+private final class MockKubeConfigRepository: KubeConfigRepositoryProtocol, @unchecked Sendable {
+    var configs: [KubeConfig] = []
+    func fetchKubeConfigs() async throws -> [KubeConfig] { configs }
+    func fetchKubeConfig(id: UUID) async throws -> KubeConfig? { configs.first(where: { $0.id == id }) }
+    func saveKubeConfig(_ config: KubeConfig) async throws { configs.append(config) }
+    func deleteKubeConfig(id: UUID) async throws { configs.removeAll(where: { $0.id == id }) }
+    func setDefaultKubeConfig(id: UUID) async throws {}
+}
+
 

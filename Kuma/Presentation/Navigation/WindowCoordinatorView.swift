@@ -19,7 +19,7 @@ public struct WindowCoordinatorView: View {
         Group {
             switch appStore.appPhase {
             case .splash:
-                SplashPlaceholderView()
+                SplashView()
             case .onboarding:
                 OnboardingPlaceholderView()
             case .mainDeck:
@@ -44,20 +44,7 @@ public struct WindowCoordinatorView: View {
     }
 }
 
-// MARK: - Temporary Phase Placeholders (Replaced in Tasks 7.2 - 7.5)
-
-private struct SplashPlaceholderView: View {
-    var body: some View {
-        VStack(spacing: 12) {
-            ProgressView()
-                .controlSize(.large)
-            Text("Initializing Kuma Engine...")
-                .font(KumaTheme.Font.subheadline)
-                .foregroundStyle(KumaTheme.Color.textSecondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}
+// MARK: - Temporary Phase Placeholders (Replaced in Tasks 7.3 - 7.5)
 
 private struct OnboardingPlaceholderView: View {
     var body: some View {

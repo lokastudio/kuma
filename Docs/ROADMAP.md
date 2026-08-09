@@ -66,7 +66,7 @@
 - [x] **7.1** `WindowCoordinator` & Single OS Window Container
 - [x] **7.2** `SplashView` (Animated App Icon, Zero Heavy Allocation, Fast-Track Detection, `#Preview`)
 - [x] **7.3** `OnboardingView` (4-Step Wizard: Welcome -> Engines -> Tunneling -> Ready)
-- [ ] **7.4** `SidebarView` (Smart 4-Section Split Navigation with Custom UI support)
+- [x] **7.4** `SidebarView` (Smart 4-Section Split Navigation with Custom UI support)
 - [ ] **7.5** `ServicesDeckView` (`LazyVStack` Grid, Search Filter, Auto-Context Follow, Quick Actions)
 - [ ] **7.6** `ServiceCardView` (Status Pills, Provider Badges, Accessibility Labels, Hover Effects)
 - [ ] **7.7** `ServiceInspectorView` (Logs Stream Viewer with Coalescing, Port Resolver UI, Human Copywriting)

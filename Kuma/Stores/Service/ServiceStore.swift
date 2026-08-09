@@ -207,6 +207,52 @@ public final class ServiceStore {
         }
     }
 
+    // MARK: - Helper & Query Extensions
+
+    /// Returns `true` if any service aggregate is currently in `.running` or `.starting` state.
+    public var hasRunningServices: Bool {
+        aggregates.contains(where: {
+            switch $0.state {
+            case .running, .starting:
+                return true
+            default:
+                return false
+            }
+        })
+    }
+
+    /// Count of running or starting service aggregates.
+    public var runningCount: Int {
+        aggregates.filter({
+            switch $0.state {
+            case .running, .starting:
+                return true
+            default:
+                return false
+            }
+        }).count
+    }
+
+    /// Dynamic count of service aggregates filtered by provider type.
+    public func count(for providerType: ProviderType) -> Int {
+        aggregates.filter({ $0.activeProvider?.providerType == providerType }).count
+    }
+
+    /// Stops all currently active services in the workspace.
+    public func stopAllServices() async {
+        let activeIds = aggregates.compactMap { agg -> UUID? in
+            switch agg.state {
+            case .running, .starting:
+                return agg.id
+            default:
+                return nil
+            }
+        }
+        for id in activeIds {
+            await stopService(id: id)
+        }
+    }
+
     // MARK: - Boot Restoration
 
     /// Resets lingering running statuses from crash/abrupt termination and restores auto-start services on boot.
@@ -218,4 +264,54 @@ public final class ServiceStore {
             Self.logger.error("Failed to reset legacy service statuses: \(error.localizedDescription, privacy: .public)")
         }
     }
+
+    // MARK: - Mock for Previews & Tests
+
+    public static var mock: ServiceStore {
+        let serviceRepo = MockServiceRepository()
+        let providerRepo = MockProviderRepository()
+        let secretRepo = MockVaultSecretRepository()
+        let store = ServiceStore(
+            serviceRepository: serviceRepo,
+            providerRepository: providerRepo,
+            vaultSecretRepository: secretRepo
+        )
+        return store
+    }
 }
+
+// MARK: - Mock Repositories for Previews
+
+private final class MockServiceRepository: ServiceRepositoryProtocol, @unchecked Sendable {
+    func fetchServices(forWorkspaceId workspaceId: UUID) async throws -> [Service] { [] }
+    func fetchServices(forGroupId groupId: UUID) async throws -> [Service] { [] }
+    func fetchFavoriteServices() async throws -> [Service] { [] }
+    func fetchService(id: UUID) async throws -> Service? { nil }
+    func saveService(_ service: Service) async throws {}
+    func saveServices(_ services: [Service]) async throws {}
+    func updateStatus(id: UUID, status: ServiceExecutionState, lastActivePort: Int?) async throws {}
+    func updateGroup(serviceId: UUID, groupId: UUID?) async throws {}
+    func updateSortOrders(_ updates: [(id: UUID, sortOrder: Int)]) async throws {}
+    func resetAllStatusesToStopped() async throws {}
+    func deleteService(id: UUID) async throws {}
+}
+
+private final class MockProviderRepository: ProviderRepositoryProtocol, @unchecked Sendable {
+    func fetchProviders(forServiceId serviceId: UUID) async throws -> [Provider] { [] }
+    func fetchProvider(id: UUID) async throws -> Provider? { nil }
+    func saveProvider(_ provider: Provider) async throws {}
+    func deleteProvider(id: UUID) async throws {}
+    func fetchPortMappings(forProviderId providerId: UUID) async throws -> [PortMapping] { [] }
+    func savePortMappings(_ mappings: [PortMapping], forProviderId providerId: UUID) async throws {}
+}
+
+private final class MockVaultSecretRepository: VaultSecretRepositoryProtocol, @unchecked Sendable {
+    func fetchSecret(id: UUID) async throws -> VaultSecret? { nil }
+    func fetchSecrets(forProvider providerId: UUID) async throws -> [VaultSecret] { [] }
+    func saveSecret(_ secret: VaultSecret, plainTextValue: String) async throws -> VaultSecret { secret }
+    func deleteSecret(id: UUID) async throws {}
+    func decryptValue(for secret: VaultSecret) async throws -> String { "" }
+}
+
+
+

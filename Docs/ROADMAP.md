@@ -39,7 +39,7 @@
 - [x] **4.3** `ProcessRunner` (Spawn Subprocess with `setpgid` & Explicit Pipe Deferral)
 - [x] **4.4** `LogCoalescer` (Buffered `AsyncStream<String>` with 200ms Throttling)
 - [x] **4.5** `ServiceExecutionEngine` (Orchestrates Execution via `ServiceExecutionState`)
-- [ ] **4.6** `JSONImporter` & `MigrationEngine` (Safe Team Workspace Sync)
+- [x] **4.6** `JSONImporter` & `MigrationEngine` (Safe Team Workspace Sync)
 - [ ] **4.7** `PortConflictResolver` (PID Detection & Auto-Free Port Suggestion)
 - [ ] **4.8** `KumaSoundManager` (Custom Sound Effects & `~/Library/Sounds/` Notification Sync)
 

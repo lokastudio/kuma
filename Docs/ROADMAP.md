@@ -49,7 +49,7 @@
 - [x] **5.1** `KumaTheme` Tokens (Fonts, Spacing, Radii, Semantic Colors)
 - [x] **5.2** `KumaFormSection` & Layout Containers
 - [x] **5.3** `KumaTextField`, `KumaPickerField`, `KumaToggleField`, `KumaSecureField` (Contextual Placeholders & Focus Rings)
-- [ ] **5.4** `KumaPortMappingEditor`, `KumaKeyValueEditor`, `KumaListManager`
+- [x] **5.4** `KumaPortMappingEditor`, `KumaKeyValueEditor`, `KumaListManager`
 
 ---
 

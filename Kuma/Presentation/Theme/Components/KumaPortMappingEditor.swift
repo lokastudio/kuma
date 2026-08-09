@@ -6,6 +6,7 @@
 import SwiftUI
 
 /// FormKit editor component for managing local-to-remote port forwarding mappings.
+@MainActor
 public struct KumaPortMappingEditor: View {
     let title: String?
     @Binding var mappings: [PortMapping]

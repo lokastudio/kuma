@@ -6,6 +6,7 @@
 import SwiftUI
 
 /// FormKit manager component for managing arbitrary lists of strings (e.g., CLI flags, arguments, tags).
+@MainActor
 public struct KumaListManager: View {
     let title: String?
     @Binding var items: [String]

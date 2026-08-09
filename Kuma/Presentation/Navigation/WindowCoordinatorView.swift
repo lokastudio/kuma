@@ -29,10 +29,10 @@ public struct WindowCoordinatorView: View {
         .frame(
             minWidth: coordinator.currentDimensions.minWidth,
             idealWidth: coordinator.currentDimensions.idealWidth,
-            maxWidth: coordinator.currentDimensions.maxWidth,
+            maxWidth: coordinator.currentDimensions.maxWidth ?? .infinity,
             minHeight: coordinator.currentDimensions.minHeight,
             idealHeight: coordinator.currentDimensions.idealHeight,
-            maxHeight: coordinator.currentDimensions.maxHeight
+            maxHeight: coordinator.currentDimensions.maxHeight ?? .infinity
         )
         .animation(.easeInOut(duration: 0.25), value: appStore.appPhase)
         .onAppear {

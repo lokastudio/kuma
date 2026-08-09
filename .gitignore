@@ -1,0 +1,17 @@
+# Xcode build output & DerivedData
+build/
+DerivedData/
+.swiftpm/
+
+# Build logs & artifacts
+*.log
+build_*.log
+build_output*.log
+
+# Xcode user state
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# macOS system files
+.DS_Store

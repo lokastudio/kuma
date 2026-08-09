@@ -41,10 +41,10 @@ Instructions for AI Agent:
 1. **Auto-Discover Changed Files**: Inspect `git status` or read `Docs/ROADMAP.md` to identify all files created/modified for this target task.
 2. **Completeness Check**: Verify files against `.agents/AGENTS.md` and `Docs/ERD.md` (check for missing cases, unhandled errors, or missing domain properties).
 3. **Swift 6 Concurrency & Type Safety**: Audit for `Sendable` conformance, `@MainActor` boundaries, and data race safety.
-4. **Proactive Refactoring Suggestions**: Propose high-precision improvements before making any edits!
-5. **Git Commit Message Recommendation**: Provide a ready-to-copy Conventional Commit message (`git commit -m "..."`) summarizing the task changes.
+4. **Proactive Refactoring Suggestions & Action Plan**: Propose high-precision fixes or improvements FIRST, and ask for user confirmation before applying code changes!
+5. **Git Commit Message (At the End)**: At the very end of your response, provide a ready-to-copy Conventional Commit message (`git commit -m "..."`) for when all audit fixes are applied.
 
-Please provide your findings first!
+Please provide your findings & refactoring suggestions first!
 ```
 
 ---
